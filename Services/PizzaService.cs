@@ -1,45 +1,40 @@
 using ContosoPizza.Models;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace ContosoPizza.Services;
 
-public static class PizzaService
+public class PizzaService
 {
-    static List<Pizza> Pizzas { get; }
-    static int nextId = 3;
-    static PizzaService()
+    private readonly IMongoCollection<Pizza> _pizzaCollection;
+    // static List<Pizza> Pizzas { get; }
+    // static int nextId = 3;
+    public PizzaService(
+        IOptions<PizzaStoreDatabaseSettings> pizzaStoreDatabaseSettings
+        )
     {
-        Pizzas = new List<Pizza>
-        {
-            new Pizza { Id = 1, Name = "Classic Italian", IsGlutenFree = false },
-            new Pizza { Id = 2, Name = "Veggie", IsGlutenFree = true }
-        };
+        var mongoClient = new MongoClient(
+            pizzaStoreDatabaseSettings.Value.ConnectionString);
+
+        var mongoDatabase = mongoClient.GetDatabase(
+            pizzaStoreDatabaseSettings.Value.DatabaseName);
+
+        _pizzaCollection = mongoDatabase.GetCollection<Pizza>(
+            pizzaStoreDatabaseSettings.Value.PizzasCollectionName);
     }
 
-    public static List<Pizza> GetAll() => Pizzas;
+    public async Task<List<Pizza>> GetAsync() =>
+        await _pizzaCollection.Find(_ => true).ToListAsync();
 
-    public static Pizza? Get(int id) => Pizzas.FirstOrDefault(p => p.Id == id);
+    public async Task<Pizza?> GetAsync(string id) =>
+        await _pizzaCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public static void Add(Pizza pizza)
-    {
-        pizza.Id = nextId++;
-        Pizzas.Add(pizza);
-    }
+    public async Task CreateAsync(Pizza newPizza) =>
+        await _pizzaCollection.InsertOneAsync(newPizza);
 
-    public static void Delete(int id)
-    {
-        var pizza = Get(id);
-        if(pizza is null)
-            return;
+    public async Task UpdateAsync(string id, Pizza updatedPizza) =>
+        await _pizzaCollection.ReplaceOneAsync(x => x.Id == id, updatedPizza);
 
-        Pizzas.Remove(pizza);
-    }
-
-    public static void Update(Pizza pizza)
-    {
-        var index = Pizzas.FindIndex(p => p.Id == pizza.Id);
-        if(index == -1)
-            return;
-
-        Pizzas[index] = pizza;
-    }
+    public async Task RemoveAsync(string id) =>
+        await _pizzaCollection.DeleteOneAsync(x => x.Id == id);
 }

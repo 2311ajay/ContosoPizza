@@ -1,3 +1,4 @@
+using ContosoPizza.Decorators;
 using ContosoPizza.Models;
 using ContosoPizza.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,13 @@ public class PizzaController : ControllerBase
 
     // GET all action
     [HttpGet]
+    [LimitRequests(MaxRequests = 2, TimeWindow = 30)]
     public async Task<List<Pizza>> Get() =>
         await _pizzaService.GetAsync();
 
     // GET by Id action
     [HttpGet("{id:length(24)}")]
+    [LimitRequests(MaxRequests = 2, TimeWindow = 30)]
     public async Task<ActionResult<Pizza>> Get(string id)
     {
         var pizza = await _pizzaService.GetAsync(id);

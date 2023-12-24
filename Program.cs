@@ -1,7 +1,10 @@
 using ContosoPizza.Models;
 using ContosoPizza.Services;
+// using RateLimitingDemo.Common.Repositories;
+using ContosoPizza.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDistributedMemoryCache();
 DotNetEnv.Env.Load();
 // Add services to the container.
 
@@ -25,7 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRateLimiting();
 app.UseAuthorization();
 
 app.MapControllers();

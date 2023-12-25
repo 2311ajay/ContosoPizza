@@ -75,7 +75,7 @@ ScaffoldingReadMe.txt
 StyleCopReport.xml
 
 # Files built from autorest
-*.codegen
+codegen/
 
 # Files built by Visual Studio
 *_i.c

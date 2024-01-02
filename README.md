@@ -15,7 +15,7 @@ Treat this repo as a first step on your journey to mastering ASP.NET Core.
 ## To Do
 
 The front end folder contains a template from [Vercel](https://vercel.com/templates/next.js/admin-dashboard-tailwind-postgres-react-nextjs), more work needs to be done to connect front and backend:
-- [X] Add [automated code generation](https://github.com/acacode/swagger-typescript-api) for REST framework using the Swagger file generated in backend. 
+- [] Add [automated code generation](https://github.com/acacode/swagger-typescript-api) for REST framework using the Swagger file generated in backend. See [here](https://dev.to/po5i/how-to-generate-a-typescript-client-from-a-swagger-documented-api-14d8) for a helpful tutorial.
 - [] Make sense of client-server interaction of the nextJs project.
 
 

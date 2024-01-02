@@ -16,13 +16,13 @@ public class PizzaController : ControllerBase
     }
 
     // GET all action
-    [HttpGet]
-    [LimitRequests(MaxRequests = 2, TimeWindow = 30)]
+    [HttpGet(Name = "GetPizzas")]
+    [LimitRequests(MaxRequests = 100, TimeWindow = 30)]
     public async Task<List<Pizza>> Get() =>
         await _pizzaService.GetAsync();
 
     // GET by Id action
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id:length(24)}", Name = "GetPizzaByID")]
     [LimitRequests(MaxRequests = 2, TimeWindow = 30)]
     public async Task<ActionResult<Pizza>> Get(string id)
     {
@@ -35,7 +35,7 @@ public class PizzaController : ControllerBase
     }
 
     // POST action
-    [HttpPost]
+    [HttpPost(Name = "CreatePizzas")]
     public async Task<IActionResult> Post(Pizza pizza)
     {            
         await _pizzaService.CreateAsync(pizza);
@@ -44,7 +44,7 @@ public class PizzaController : ControllerBase
 
     // PUT action
 
-    [HttpPut("{id:length(24)}")]
+    [HttpPut("{id:length(24)}", Name = "UpdatePizzas")]
     public async Task<IActionResult> Update(string id, Pizza newPizzaData)
     {
         var oldPizzaData = await _pizzaService.GetAsync(id);
@@ -61,7 +61,7 @@ public class PizzaController : ControllerBase
 
     // DELETE action
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("{id:length(24)}", Name = "DeletePizzas")]
     public async Task<IActionResult> Delete(string id)
     {
         var pizza = await _pizzaService.GetAsync(id);

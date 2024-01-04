@@ -37,4 +37,15 @@ public class PizzaService
 
     public async Task RemoveAsync(string id) =>
         await _pizzaCollection.DeleteOneAsync(x => x.Id == id);
+
+    public static List<Pizza> GetAllMocks(){
+        Console.WriteLine("Called getmock");
+        var Pizzas = new List<Pizza>
+        {
+            new Pizza { Id = "1", Name = "Classic Italian", IsGlutenFree = false },
+            new Pizza { Id = "2", Name = "Veggie", IsGlutenFree = true }
+        };
+
+        return Pizzas;
+    }
 }

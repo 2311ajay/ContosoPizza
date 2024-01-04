@@ -16,10 +16,10 @@ public class PizzaController : ControllerBase
     }
 
     // GET all action
-    [HttpGet(Name = "GetPizzas")]
-    [LimitRequests(MaxRequests = 100, TimeWindow = 30)]
-    public async Task<List<Pizza>> Get() =>
-        await _pizzaService.GetAsync();
+    // [HttpGet(Name = "GetPizzas")]
+    // [LimitRequests(MaxRequests = 100, TimeWindow = 30)]
+    // public async Task<List<Pizza>> Get() =>
+    //     await _pizzaService.GetAsync();
 
     // GET by Id action
     [HttpGet("{id:length(24)}", Name = "GetPizzaByID")]
@@ -72,5 +72,13 @@ public class PizzaController : ControllerBase
         await _pizzaService.RemoveAsync(id);
     
         return NoContent();
+    }
+
+        // GET all action
+    [HttpGet(Name = "GetMockPizzas")]
+    // [Route("/GetMockPizzas")]
+    public ActionResult<List<Pizza>> GetMock()
+    {
+        return PizzaService.GetAllMocks();
     }
 }

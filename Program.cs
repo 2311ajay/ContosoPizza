@@ -25,6 +25,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+         // CORS - Allow calling the API from WebBrowsers
+    app.UseCors(x => x
+        .AllowAnyMethod()
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        // .AllowCredentials()
+        //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins seperated with comma
+        .SetIsOriginAllowed(origin => true));// Allow any origin  
 }
 else {
     app.UseHttpsRedirection();
